@@ -184,8 +184,8 @@ void Sudoku::SudokuOut(vector<vector<int>> outMap) {
     cout << outMap[1][3] << "  " << outMap[1][4] << "  " << outMap[1][5] << " │ ";
     cout << outMap[1][6] << "  " << outMap[1][7] << "  " << outMap[1][8] << " " << "│\n";
     cout << "│ " << outMap[2][0] << "  " << outMap[2][1] << "  " << outMap[2][2] << " │ ";
-    cout << outMap[2][3] << "  " << outMap[0][4] << "  " << outMap[2][5] << " │ ";
-    cout << outMap[2][6] << "  " << outMap[0][7] << "  " << outMap[2][8] << " " << "│\n";
+    cout << outMap[2][3] << "  " << outMap[2][4] << "  " << outMap[2][5] << " │ ";
+    cout << outMap[2][6] << "  " << outMap[2][7] << "  " << outMap[2][8] << " " << "│\n";
     cout << "├─────────┼─────────┼─────────┤\n";
     cout << "│ " << outMap[3][0] << "  " << outMap[3][1] << "  " << outMap[3][2] << " │ ";
     cout << outMap[3][3] << "  " << outMap[3][4] << "  " << outMap[3][5] << " │ ";
