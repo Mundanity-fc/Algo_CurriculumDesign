@@ -8,11 +8,11 @@ class Sudoku {
      *  Col                  ┌─────────────────────┐
      *   │                   │                     │
      *   │                   │                     │
-     *   ↓                   ↓                     │
+     *   v                   v                     │
      * ┌─────────┬─────────┬─────────┐             │
-     * │ 0  0  0 │ 0  0  0 │ 0  0  0 │ ←─── Row    │
+     * │ 0  0  0 │ 0  0  0 │ 0  0  0 │ <─── Row    │
      * │ 0  0  0 │ 0  0  0 │ 0  0  0 │             │
-     * │ 0  0  0 │ 0  0  0 │ 0  0  0 │ ←───────────┴──────── Block
+     * │ 0  0  0 │ 0  0  0 │ 0  0  0 │ <───────────┴──────── Block
      * ├─────────┼─────────┼─────────┤
      * │ 0  0  0 │ 0  0  0 │ 0  0  0 │
      * │ 0  0  0 │ 0  0  0 │ 0  0  0 │
@@ -32,10 +32,9 @@ private:
     vector<vector<vector<int>>> result;
     // 全局计数器
     int count;
-
     // 从数集num中去除该行、列、块下所有已有数字
     void deduplication(int rowNum, int colNum, set<int> &num);
-
+    // 数独内容输出标准
     void SudokuOut(vector<vector<int>> outMap);
 
 public:
@@ -50,28 +49,20 @@ public:
 
     // 加载数独内容
     void initialMap(int initialMap[9][9]);
-
-    // 输出数独内容
+    // 输出当前数独内容
     void printMap();
-
-    // 搜索回溯
+    // 搜索回溯算法
     bool search();
-
     // 全局冲突检查，调用行、列、块冲突检查实现
     bool checkConflict();
-
     // 行冲突检查
     bool checkRowConflict(int rowNum);
-
     // 列冲突检查
     bool checkColConflict(int colNum);
-
     // 块冲突检查
     bool checkBlockConflict(int rowNum, int colNum);
-
     // 数独完成检测
     bool checkFinish();
-
     // 结果输出
     void output();
 };
@@ -85,11 +76,15 @@ void Sudoku::initialMap(int initialMap[9][9]) {
 }
 
 bool Sudoku::checkConflict() {
+    // 总体冲突检测
     for (int i = 0; i < 9; ++i) {
+        // 行列冲突
         if (this->checkRowConflict(i))
             return true;
         if (this->checkColConflict(i))
             return true;
+
+        // 块冲突
         if (i % 3 == 0) {
             if (this->checkBlockConflict(i, 0))
                 return true;
@@ -138,6 +133,8 @@ bool Sudoku::checkColConflict(int colNum) {
 bool Sudoku::checkBlockConflict(int rowNum, int colNum) {
     set<int> Num = this->sudokuSet;
     vector<int> rowArray(3), colArray(3);
+
+    // 确认块坐标
     if (rowNum <= 2)
         rowArray = {0, 1, 2};
     else if (rowNum <= 5)
@@ -152,6 +149,7 @@ bool Sudoku::checkBlockConflict(int rowNum, int colNum) {
     else
         colArray = {6, 7, 8};
 
+    // 进行块检测
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             if (this->map[rowArray[i]][colArray[j]] == 0)
@@ -235,22 +233,32 @@ bool Sudoku::search() {
     // 搜索主体
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
-            // 跳过已有数字，寻找上层遍历进行后，数独中存在的下一个空位
+            // 跳过已有数字，寻找上层遍历进行后数独中存在的第一个空位
             if (this->map[i][j] != 0)
                 continue;
+
             // 数字为 0 时，表示为空格，开始建立搜索环境
+
+            // 建立一个数字集合
             set<int> num = this->sudokuSet;
-            // 从数集中去除该行、列、块下所有已有数字
+
+            // 从数字集中去除该坐标同行、同列、同块下所有已有数字
             this->deduplication(i, j, num);
-            // 递归执行所有可能性
+
+            // 递归执行该位置剩余所有可能数字
             while (!num.empty()) {
                 // 取出集合中第一个元素
                 this->map[i][j] = *num.begin();
+                // 从集合中去除取出的数字
                 num.erase(num.begin());
+                // 进行下次递归
                 this->search();
             }
+
             // 搜索结束返回上层时，需要将本层搜索结果清除
             this->map[i][j] = 0;
+
+            // 返回上层递归
             return false;
         }
     }
@@ -259,13 +267,13 @@ bool Sudoku::search() {
 
 void Sudoku::deduplication(int rowNum, int colNum, set<int> &num) {
     vector<int> rowArray(3), colArray(3);
+    // 确定块坐标
     if (rowNum <= 2)
         rowArray = {0, 1, 2};
     else if (rowNum <= 5)
         rowArray = {3, 4, 5};
     else
         rowArray = {6, 7, 8};
-
     if (colNum <= 2)
         colArray = {0, 1, 2};
     else if (colNum <= 5)
@@ -290,6 +298,7 @@ void Sudoku::deduplication(int rowNum, int colNum, set<int> &num) {
 
 void Sudoku::output() {
     cout << "共找到 " << this->result.size() << " 个结果，结果如下：\n";
+    // 依次输出所有结果
     for (auto &i: this->result) {
         this->SudokuOut(i);
         cout << endl;
