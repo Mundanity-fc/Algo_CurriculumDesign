@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
-project(Sudoku)
+project(Algo_CurriculumDesign)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Sudoku main.cpp Sudoku.h)
+add_executable(Algo_CurriculumDesign Sudoku.h test.cpp)
