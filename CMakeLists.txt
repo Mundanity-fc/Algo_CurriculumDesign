@@ -3,4 +3,4 @@ project(Algo_CurriculumDesign)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Algo_CurriculumDesign Sudoku.h test.cpp)
+add_executable(Algo_CurriculumDesign Sudoku.h Algo.cpp)

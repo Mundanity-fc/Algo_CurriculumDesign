@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int main() {
+int run_Sudoku() {
 //    int su[9][9] = {{3,0,6,5,0,8,4,0,0},
 //                    {5,2,0,0,0,0,0,0,0},
 //                    {0,8,7,0,0,0,0,3,1},
@@ -30,5 +30,10 @@ int main() {
     getchar();
     Su.search();
     Su.output();
+    return 0;
+}
+
+int main(){
+    run_Sudoku();
     return 0;
 }
