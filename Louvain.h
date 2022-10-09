@@ -9,7 +9,7 @@ using namespace std;
 // 网络中的节点
 struct Node{
     int ID;
-    vector<int> Neighbor;
+    vector<vector<int>> Neighbor;
 };
 
 // 网络中的社区
@@ -26,6 +26,8 @@ private:
 
 public:
     Louvain();
+
+    void printNet();
 };
 
 
