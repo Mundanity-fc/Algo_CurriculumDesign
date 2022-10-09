@@ -1,0 +1,10 @@
+#ifndef ALGO_CURRICULUMDESIGN_LOUVAIN_H
+#define ALGO_CURRICULUMDESIGN_LOUVAIN_H
+
+
+class Louvain {
+
+};
+
+
+#endif

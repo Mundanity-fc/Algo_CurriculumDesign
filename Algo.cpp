@@ -1,5 +1,4 @@
 #include <iostream>
-#include <set>
 #include "Sudoku.h"
 
 using namespace std;
