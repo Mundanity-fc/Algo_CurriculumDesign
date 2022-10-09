@@ -5,6 +5,15 @@
 
 using namespace std;
 
+Sudoku::Sudoku()  {
+    // 数独合法数字集合初始化
+    int numList[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    this->sudokuSet = set<int>(numList, numList + 9);
+    // 数独棋盘初始化
+    this->map = vector<vector<int>>(9, vector<int>(9));
+    this->count = 0;
+}
+
 void Sudoku::initialMap(int initialMap[9][9]) {
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
@@ -155,7 +164,7 @@ bool Sudoku::search() {
     // 每次开始前进行完成度检测，避免无效遍历
     if (this->checkFinish()) {
         // 数独完成且无冲突情况，记录为正确结果，进行结果输出并保存
-        if (not this->checkConflict()) {
+        if (!this->checkConflict()) {
             cout << "发现一个结果\n";
             this->result.push_back(this->map);
             this->printMap();

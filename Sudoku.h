@@ -41,14 +41,7 @@ private:
     void SudokuOut(vector<vector<int>> outMap);
 
 public:
-    Sudoku() {
-        // 数独合法数字集合初始化
-        int numList[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        this->sudokuSet = set<int>(numList, numList + 9);
-        // 数独棋盘初始化
-        this->map = vector<vector<int>>(9, vector<int>(9));
-        this->count = 0;
-    }
+    Sudoku();
 
     // 加载数独内容
     void initialMap(int initialMap[9][9]);
