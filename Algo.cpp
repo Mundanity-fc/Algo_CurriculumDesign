@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Sudoku.h"
+#include "Louvain.h"
 
 using namespace std;
 
@@ -32,7 +33,16 @@ int run_Sudoku() {
     return 0;
 }
 
+int run_Louvain(){
+    Louvain louvain;
+    louvain.printNet();
+    louvain.runLouvain();
+    return 0;
+}
+
+
 int main(){
-    run_Sudoku();
+    //run_Sudoku();
+    run_Louvain();
     return 0;
 }
