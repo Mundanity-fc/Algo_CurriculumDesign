@@ -281,6 +281,11 @@ class Louvain:
 
     def run(self):
         q = self.do_louvain()
-        print()
+        for i in range(len(self.top_community)):
+            print(self.top_community[i])
+        print("最终的模块度为 " + str(q))
+    # def run_with_label(self):
+    #     q = self.do_louvain()
+    #     print()
 
 
