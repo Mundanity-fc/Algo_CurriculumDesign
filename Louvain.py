@@ -27,7 +27,6 @@ class Louvain:
         self.network = (self.nodes, self.edges)
         # 初始化节点的度数
         self.Ki = [0 for node in self.nodes]
-        self.w = [0 for node in self.nodes]
         # 每个节点有关的边的集合
         self.edges_of_nodes = {}
         # 遍历所有的边
@@ -42,10 +41,11 @@ class Louvain:
             else:
                 # 某个节点信息已在节点有关的边的集合里，在该位置插入一条边
                 self.edges_of_nodes[edge[0][0]].append(edge)
-            # 边两侧做同样操作
+            # 边另一侧同样新建
             if edge[0][1] not in self.edges_of_nodes:
                 self.edges_of_nodes[edge[0][1]] = [edge]
-            else:
+            # 非自指向边则直接插入，自指向边由于已经插入完成，不再进行插入
+            elif edge[0][0] != edge[0][1]:
                 self.edges_of_nodes[edge[0][1]].append(edge)
         # 将所有节点都单独分配到一个社区，id 为节点编号，数值为节点所属社区标签
         self.communities = [n for n in self.nodes]
@@ -111,6 +111,11 @@ class Louvain:
                 max_delta_q = 0
                 max_link = 0
                 self_community = self.communities[node]
+                self_link = 0
+                # 计数节点自身指向的边数
+                for edge in self.edges_of_nodes[node]:
+                    if edge[0][0] == edge[0][1]:
+                        self_link += edge[1]
                 # 移动目标社区，默认为初始社区，即不发生移动
                 target_community = self_community
                 # 寻找社区的邻居节点
@@ -149,9 +154,11 @@ class Louvain:
                 # 修改节点的归属网络
                 self.communities[node] = target_community
                 # 移入新社区后，社区内部的边个数应当增加节点和社区之间的关联边数的两倍
-                self.phiIN[target_community] += 2 * (max_link + self.w[node])
+                self.phiIN[target_community] += 2 * max_link
+                self.phiIN[self_community] -= 2 * self_link
                 # 移入新社区后，与社区有关联的边数应当增加上节点的度
                 self.phiTot[target_community] += self.Ki[node]
+                self.phiTot[self_community] -= self.Ki[node]
             # 当没有进行更改时，跳出 while 循环
             if not is_changed:
                 break
@@ -200,8 +207,6 @@ class Louvain:
         self.edges = edges
         # 初始化节点的度数
         self.Ki = [0 for node in nodes]
-
-        self.w = [0 for n in nodes]
         # 初始化每个节点有关的边的集合
         self.edges_of_nodes = {}
         # 遍历所有的边
@@ -209,9 +214,6 @@ class Louvain:
             # 增加每条边指向的两个节点的度数
             self.Ki[edge[0][0]] += edge[1]
             self.Ki[edge[0][1]] += edge[1]
-
-            if edge[0][0] == edge[0][1]:
-                self.w[edge[0][0]] += edge[1]
             # 对节点建立边表
             if edge[0][0] not in self.edges_of_nodes:
                 # 某个节点信息不在节点有关的边的集合里，就在该节点位置新增一个边集合
